@@ -1,12 +1,13 @@
 
-const header = () => {
+const Header = () => {
   return (
       <>
-          <div className="flex w-full  h-[30vh] bg-gray-100">
-              
+          <div className=" h-24 w-full bg-gradient-to-l from-[]">
+              <img src="" alt="" />
+              <h1>Header</h1>
           </div>
       </>
   )
 }
 
-export default header
+export default Header

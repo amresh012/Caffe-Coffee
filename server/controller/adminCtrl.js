@@ -13,7 +13,6 @@ const productModel = require("../models/productModel");
 const getAdminData = asyncHandle(async (req, res) => {
   try {
     const date = new Date();
-
     const totalNewCustomers = await userModel.aggregate([
       {
         $project: {
@@ -34,15 +33,12 @@ const getAdminData = asyncHandle(async (req, res) => {
         },
       },
     ]);
-
     const totalOrders = await orderModel.aggregate([
       {
         $project: {
           month: { $month: "$createdAt" },
           year: { $year: "$createdAt" },
           dayOfMonth: { $dayOfMonth: "$createdAt" },
-
-
         },
       },
       {
@@ -61,12 +57,8 @@ const getAdminData = asyncHandle(async (req, res) => {
         },
       },
     ]);
-
-
     const totalProducts = await productModel.find().countDocuments();
-
     const totalCategories = await productModel.distinct("category");
-    
     // total payment per day
      const totalPaymentsToday = await orderModel.aggregate([
        {
@@ -93,7 +85,6 @@ const getAdminData = asyncHandle(async (req, res) => {
           },
         },
       ]);
-    
      const paymentsTodayValue =
        totalPaymentsToday.length > 0
          ? totalPaymentsToday[0].currentDayPayments
@@ -102,13 +93,8 @@ const getAdminData = asyncHandle(async (req, res) => {
        totalPaymentsAllTime.length > 0
          ? totalPaymentsAllTime[0].totalPayments
          : 0;
-
-    
-    
     const recentOrders = await orderModel.find().populate("users").sort({ createdAt: -1 }).limit(9);
-    
     const ordersSummary = [];
-    
     const customersSummary = await userModel.aggregate([
       {
         $project: {
@@ -125,7 +111,6 @@ const getAdminData = asyncHandle(async (req, res) => {
         },
       },
     ]);
-
     const categoriesSummary = await productModel.aggregate([
       {
         $group: {
@@ -136,10 +121,8 @@ const getAdminData = asyncHandle(async (req, res) => {
         }
       }
     ]);
-
     // invoiceData
     const invoiceData = 
-   
     res.status(200).json({
       success: true,
       totalNewCustomers:
@@ -159,5 +142,4 @@ const getAdminData = asyncHandle(async (req, res) => {
     res.status(400).send(error);
   }
 });
-
 module.exports = { getAdminData };
